@@ -420,8 +420,13 @@ function invertCase(str) {
  *   getStringFromTemplate('John','Doe') => 'Hello, John Doe!'
  *   getStringFromTemplate('Chuck','Norris') => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  // Input validation (optional but good practice):
+  if (typeof firstName !== 'string' || typeof lastName !== 'string') {
+    return 'Invalid input: firstName and lastName must be strings.';
+  }
+
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -434,8 +439,16 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  // Input validation (important for robustness):
+  if (
+    typeof value !== 'string' ||
+    !value.startsWith('Hello, ') ||
+    !value.endsWith('!')
+  ) {
+    return null; // or throw an error: throw new Error("Invalid input format");
+  }
+  return value.substring('Hello, '.length, value.length - 1);
 }
 
 /**
@@ -449,8 +462,19 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  // Input validation: Check if the input is a string and if it has at least 2 characters.  Essential for robustness.
+  if (
+    typeof str !== 'string' ||
+    str.length < 2 ||
+    !str.startsWith('<') ||
+    !str.endsWith('>')
+  ) {
+    return ''; // Or throw an error: throw new Error("Invalid input format");
+  }
+
+  // Extract the content between the brackets.
+  return str.substring(1, str.length - 1);
 }
 
 /**
@@ -468,8 +492,13 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  if (typeof str !== 'string') {
+    return [];
+  }
+
+  const emails = str.split(';');
+  return emails.map((email) => email.trim());
 }
 
 /**
@@ -488,8 +517,22 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  if (typeof str !== 'string') {
+    return '';
+  }
+
+  let result = '';
+  for (let i = 0; i < str.length; i += 1) {
+    let charCode = str.charCodeAt(i);
+    if (charCode >= 65 && charCode <= 90) {
+      charCode = ((charCode - 65 + 13) % 26) + 65;
+    } else if (charCode >= 97 && charCode <= 122) {
+      charCode = ((charCode - 97 + 13) % 26) + 97;
+    }
+    result += String.fromCharCode(charCode);
+  }
+  return result;
 }
 
 /**
@@ -516,8 +559,48 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const ranks = [
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+    'A',
+  ];
+  const suits = ['♣', '♦', '♥', '♠'];
+
+  if (
+    typeof value !== 'string' ||
+    value.length < 2 ||
+    value.length > 3 ||
+    !suits.includes(value.slice(-1))
+  ) {
+    return -1;
+  }
+
+  const suit = value.slice(-1);
+  const suitIndex = suits.indexOf(suit);
+
+  if (suitIndex === -1) {
+    return -1;
+  }
+
+  const rank = value.substring(0, value.length - 1);
+  const rankIndex = ranks.indexOf(rank);
+
+  if (rankIndex === -1) {
+    return -1;
+  }
+
+  return suitIndex * 13 + rankIndex;
 }
 
 module.exports = {
