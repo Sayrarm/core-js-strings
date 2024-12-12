@@ -167,8 +167,23 @@ function removeFirstOccurrences(str, value) {
  *   removeLastOccurrences('I like legends', 'end') => 'I like legs'.
  *   removeLastOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
-function removeLastOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeLastOccurrences(str, value) {
+  // Input validation (crucial):
+  if (typeof str !== 'string' || typeof value !== 'string') {
+    return '';
+  }
+  if (value.length === 0) {
+    return str;
+  }
+
+  const lastIndex = str.lastIndexOf(value);
+
+  // If the substring wasn't found, return the original string
+  if (lastIndex === -1) {
+    return str;
+  }
+
+  return str.substring(0, lastIndex) + str.substring(lastIndex + value.length);
 }
 
 /**
