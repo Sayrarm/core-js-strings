@@ -561,6 +561,7 @@ function encodeToRot13(str) {
  */
 function getCardId(value) {
   const ranks = [
+    'A',
     '2',
     '3',
     '4',
@@ -573,8 +574,8 @@ function getCardId(value) {
     'J',
     'Q',
     'K',
-    'A',
   ];
+
   const suits = ['♣', '♦', '♥', '♠'];
 
   if (
